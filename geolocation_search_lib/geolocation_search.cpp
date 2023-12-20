@@ -15,14 +15,16 @@ std::optional<GeoLocation> GeolocationSearch::getIPGeoLocation(const std::string
         if (!geolocation) {
             std::cout << "Geolocation for host: " << parsed_host << " not present in database" << std::endl;
             geolocation = geolocation_client_->getIPGeoLocation(parsed_host);
+
+            if (!geolocation) {
+                return std::nullopt;
+            }
+
+            //TODO: consider what to do if store in db not sucess? Do it async to not blocking?
+            databse_client_->store(*geolocation);
         }
 
-        if (!geolocation) {
-            return std::nullopt;
-        }
         cache_.insert({parsed_host, *geolocation});
-        //TODO: consider what to do if store in db not sucess? Do it async to not blocking?
-        databse_client_->store(*geolocation);
     }
 
     return cache_.at(parsed_host);

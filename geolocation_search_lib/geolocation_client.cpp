@@ -15,12 +15,10 @@ GeolocationClient::GeolocationClient(const std::string host, const std::string a
     : http_client_(host)
     , api_key_(api_key)
 {
-
 }
 
 std::optional<GeoLocation> GeolocationClient::getIPGeoLocation(const std::string& ip)
 {    
-    std::string target = "/" + ip + "?access_key=" + api_key_;
     auto response = http_client_.request(methods::GET, uri_builder(U(ip)).append_query(U("access_key"), api_key_).to_string()).get();
 
     if (response.status_code() != 200) {

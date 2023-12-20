@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "http_test_server.hpp"
-#include <geolocation_search.hpp>
+#include <geolocation_client.hpp>
 #include <thread>
 
 using namespace web;
