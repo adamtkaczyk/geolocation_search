@@ -17,9 +17,9 @@ GeolocationClient::GeolocationClient(const std::string host, const std::string a
 {
 }
 
-std::optional<GeoLocation> GeolocationClient::getIPGeoLocation(const std::string& ip)
+std::optional<GeoLocation> GeolocationClient::getIPGeoLocation(const std::string& host)
 {    
-    auto response = http_client_.request(methods::GET, uri_builder(U(ip)).append_query(U("access_key"), api_key_).to_string()).get();
+    auto response = http_client_.request(methods::GET, uri_builder(U(host)).append_query(U("access_key"), api_key_).to_string()).get();
 
     if (response.status_code() != 200) {
 		throw std::runtime_error("Returned " + std::to_string(response.status_code()));
@@ -27,11 +27,16 @@ std::optional<GeoLocation> GeolocationClient::getIPGeoLocation(const std::string
 
     auto response_json = response.extract_json().get();
 
-    return parseJson(response_json);
+    auto geolocation = parseJson(response_json);
+    if (geolocation) {
+        geolocation->host = host;
+    }
+    return geolocation;
 }
 
 std::optional<GeoLocation> GeolocationClient::parseJson(json::value& json)
 {
+    GeoLocation geolocation;
     if (!json.has_double_field("latitude")) {
         throw std::runtime_error("Field latitude not exist in json response");
     }
@@ -40,5 +45,48 @@ std::optional<GeoLocation> GeolocationClient::parseJson(json::value& json)
         throw std::runtime_error("Field longitude not exist in json response");
     }
 
-    return GeoLocation{json[U("latitude")].as_double(), json[U("longitude")].as_double()};
+    geolocation.latitude = json[U("latitude")].as_double();
+    geolocation.longitude = json[U("longitude")].as_double();
+
+    if (json.has_string_field("ip")) {
+        geolocation.ip = json[U("ip")].as_string();
+    }
+
+    if (json.has_string_field("type")) {
+        geolocation.type = json[U("type")].as_string();
+    }
+
+    if (json.has_string_field("continent_code")) {
+        geolocation.continent_code = json[U("continent_code")].as_string();
+    }
+
+    if (json.has_string_field("continent_name")) {
+        geolocation.continent_name = json[U("continent_name")].as_string();
+    }
+
+    if (json.has_string_field("country_code")) {
+        geolocation.country_code = json[U("country_code")].as_string();
+    }
+
+    if (json.has_string_field("country_name")) {
+        geolocation.country_name = json[U("country_name")].as_string();
+    }
+
+    if (json.has_string_field("region_code")) {
+        geolocation.region_code = json[U("region_code")].as_string();
+    }
+
+    if (json.has_string_field("region_name")) {
+        geolocation.region_name = json[U("region_name")].as_string();
+    }
+
+    if (json.has_string_field("city")) {
+        geolocation.city = json[U("city")].as_string();
+    }
+
+    if (json.has_string_field("zip")) {
+        geolocation.zip = json[U("zip")].as_string();
+    }
+
+    return geolocation;
 }

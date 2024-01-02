@@ -8,6 +8,11 @@ struct GeoLocationConfiguration {
         UNKONOW = 0,
         POSTGRESQL = 1
     };
+    std::string db_name;
+    std::string db_password;
+    std::string db_user;
+    std::string db_hostname;
+    unsigned db_port;
 
     enum class GeoLocationClientType {
         UNKONOW = 0,
@@ -23,4 +28,7 @@ struct GeoLocationConfiguration {
 class GeoLocationFactory {
 public:
     static std::unique_ptr<GeolocationSearch> create(const GeoLocationConfiguration& configuration);
+private:
+    static std::unique_ptr<GeolocationClientInterface> createGeolocationClient(const GeoLocationConfiguration& configuration);
+    static std::unique_ptr<DatabaseClientInterface> createDatabseClient(const GeoLocationConfiguration& configuration);
 };

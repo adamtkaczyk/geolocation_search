@@ -8,7 +8,7 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/")
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
@@ -24,6 +24,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(geolocation_search
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        cmake_modules/FindPQXX.cmake
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET geolocation_search APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

@@ -10,7 +10,7 @@ public:
     GeolocationClient(const std::string host, const std::string api_key);
     ~GeolocationClient() = default;
 
-    std::optional<GeoLocation> getIPGeoLocation(const std::string& ip) override final;
+    std::optional<GeoLocation> getIPGeoLocation(const std::string& host) override final;
 private:
     std::optional<GeoLocation> parseJson(web::json::value& json);
 

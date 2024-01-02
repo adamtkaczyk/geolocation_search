@@ -9,6 +9,7 @@ class GeolocationSearch {
 public:
     GeolocationSearch(std::unique_ptr<GeolocationClientInterface> geolocation_client, std::unique_ptr<DatabaseClientInterface> databse_client);
     std::optional<GeoLocation> getIPGeoLocation(const std::string& host);
+    bool deleteLocation(const std::string& host);
 private:
     const std::string parseInput(const std::string& host);
 

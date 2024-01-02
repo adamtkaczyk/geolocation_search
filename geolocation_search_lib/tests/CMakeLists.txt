@@ -6,7 +6,8 @@ add_executable(geolocation_search_tests
     http_test_server.cpp
     geolocation_search_tests.cpp
     geolocation_client_mock.hpp
-    database_client_mock.hpp)
+    database_client_mock.hpp
+    postgresql_client_tests.cpp)
 
 find_package(GTest REQUIRED)
 target_link_libraries(geolocation_search_tests

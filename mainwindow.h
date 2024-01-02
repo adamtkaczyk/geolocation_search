@@ -20,7 +20,8 @@ public:
     ~MainWindow();
 
 private slots:
-    void handleButton();
+    void handleGetLocationButton();
+    void handleDeleteLocationButton();
 private:
     Ui::MainWindow *ui;
     std::unique_ptr<GeolocationSearch> geolocation_serach_;

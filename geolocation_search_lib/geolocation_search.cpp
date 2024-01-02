@@ -4,7 +4,6 @@ GeolocationSearch::GeolocationSearch(std::unique_ptr<GeolocationClientInterface>
     : geolocation_client_(std::move(geolocation_client))
     , databse_client_(std::move(databse_client))
 {
-
 }
 
 std::optional<GeoLocation> GeolocationSearch::getIPGeoLocation(const std::string& host)
@@ -21,13 +20,23 @@ std::optional<GeoLocation> GeolocationSearch::getIPGeoLocation(const std::string
             }
 
             //TODO: consider what to do if store in db not sucess? Do it async to not blocking?
-            databse_client_->store(*geolocation);
+            databse_client_->storeGeoLocation(*geolocation);
         }
 
         cache_.insert({parsed_host, *geolocation});
     }
 
     return cache_.at(parsed_host);
+}
+
+bool GeolocationSearch::deleteLocation(const std::string& host)
+{
+    const auto parsed_host = parseInput(host);
+    if (cache_.find(parsed_host) == cache_.end()) {
+        cache_.erase(parsed_host);
+    }
+
+    return databse_client_->deleteGeoLocation(parsed_host);
 }
 
 const std::string GeolocationSearch::parseInput(const std::string& host)

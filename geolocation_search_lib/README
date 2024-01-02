@@ -1,1 +1,4 @@
 https://github.com/Microsoft/cpprestsdk
+
+sudo dnf install libpq-devel
+sudo dnf install libpqxx-devel.x86_64
