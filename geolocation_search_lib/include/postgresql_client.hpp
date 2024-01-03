@@ -17,5 +17,6 @@ private:
     const std::string& password_;
     const std::string& hostname_;
     const unsigned port_;
+    const short retry = 3;
     std::unique_ptr<pqxx::connection> connection_;
 };

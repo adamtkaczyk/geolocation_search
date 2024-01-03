@@ -2,7 +2,7 @@
 
 #include <postgresql_client.hpp>
 
-TEST(PostgreSQLClient, storeGeoLocation)
+TEST(PostgreSQLClient, postgresqlClientTest)
 {
     GeoLocation geolocation{"example_host.com", "10.19.10.11", "ipv4", "NA", "North America", "US",
                             "United States", "CA", "California", "Mountain View", "94043", 1.234, 56.1123};

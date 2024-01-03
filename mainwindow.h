@@ -19,6 +19,8 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    bool init();
+
 private slots:
     void handleGetLocationButton();
     void handleDeleteLocationButton();

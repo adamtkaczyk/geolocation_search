@@ -22,7 +22,7 @@ std::optional<GeoLocation> GeolocationClient::getIPGeoLocation(const std::string
     auto response = http_client_.request(methods::GET, uri_builder(U(host)).append_query(U("access_key"), api_key_).to_string()).get();
 
     if (response.status_code() != 200) {
-		throw std::runtime_error("Returned " + std::to_string(response.status_code()));
+        throw GeolocationClientException("Returned " + std::to_string(response.status_code()));
 	}
 
     auto response_json = response.extract_json().get();
@@ -38,11 +38,11 @@ std::optional<GeoLocation> GeolocationClient::parseJson(json::value& json)
 {
     GeoLocation geolocation;
     if (!json.has_double_field("latitude")) {
-        throw std::runtime_error("Field latitude not exist in json response");
+        throw GeolocationClientException("Field latitude not exist in json response");
     }
 
     if (!json.has_double_field("longitude")) {
-        throw std::runtime_error("Field longitude not exist in json response");
+        throw GeolocationClientException("Field longitude not exist in json response");
     }
 
     geolocation.latitude = json[U("latitude")].as_double();

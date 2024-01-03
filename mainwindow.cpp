@@ -7,24 +7,31 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , geolocation_serach_(GeoLocationFactory::create([](){
-        //TODO: chage to read from config file or input paramiter
-        GeoLocationConfiguration config;
-        config.database_type = GeoLocationConfiguration::DatabaseType::POSTGRESQL;
-        config.db_name = "geolocations";
-        config.db_user = "postgres";
-        config.db_password = "testpassword123";
-        config.db_hostname = "127.0.0.1";
-        config.db_port = 5432;
-        config.geolocation_client_type = GeoLocationConfiguration::GeoLocationClientType::IPSTACK;
-        config.geolocation_client_url = "http://api.ipstack.com";
-        config.api_key = "2361f872909e692d1a67ae3e538f4582";
-        return config;
-    }()))
+    , geolocation_serach_(nullptr)
 {
     ui->setupUi(this);
+
+}
+
+bool MainWindow::init()
+{
+    //TODO: chage to read from config file or input paramiter
+    GeoLocationConfiguration config;
+    config.database_type = GeoLocationConfiguration::DatabaseType::POSTGRESQL;
+    config.db_name = "geolocations";
+    config.db_user = "postgres";
+    config.db_password = "testpassword123";
+    config.db_hostname = "127.0.0.1";
+    config.db_port = 5432;
+    config.geolocation_client_type = GeoLocationConfiguration::GeoLocationClientType::IPSTACK;
+    config.geolocation_client_url = "http://api.ipstack.com";
+    config.api_key = "2361f872909e692d1a67ae3e538f4582";
+
+    geolocation_serach_ = GeoLocationFactory::create(config);
+
     connect(ui->get_location_button, &QPushButton::released, this, &MainWindow::handleGetLocationButton);
     connect(ui->delete_location_button, &QPushButton::released, this, &MainWindow::handleDeleteLocationButton);
+    return true;
 }
 
 void MainWindow::handleGetLocationButton()
@@ -50,9 +57,9 @@ void MainWindow::handleGetLocationButton()
             ui->lonitude_edit->setText(QString::number(location->longitude));
             ui->latitude_edit->setText(QString::number(location->latitude));
         }
-    } catch (std::exception& e) {
+    } catch (const std::exception& e) {
         QMessageBox msgBox;
-        msgBox.setText("Cannot get location value");
+        msgBox.setText("Cannot get location value: " + QString{e.what()});
         msgBox.exec();
     }
 }
@@ -79,9 +86,9 @@ void MainWindow::handleDeleteLocationButton()
             ui->lonitude_edit->clear();
             ui->latitude_edit->clear();
         }
-    } catch (std::exception& e) {
+    } catch (const std::exception& e) {
         QMessageBox msgBox;
-        msgBox.setText("Cannot delete location");
+        msgBox.setText("Cannot delete location: " + QString{e.what()});
         msgBox.exec();
     }
 }

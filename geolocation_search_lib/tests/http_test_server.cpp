@@ -4,6 +4,7 @@
 #include <cpprest/json.h>
 #include <chrono>
 #include <thread>
+#include <spdlog/spdlog.h>
 
 using namespace web;
 using namespace web::http;
@@ -18,7 +19,7 @@ HttpTestServer::HttpTestServer(const std::string host, const int port)
 void HttpTestServer::run()
 {
     const std::string address = "http://" + host_ + ":" + std::to_string(port_);
-    std::cout << "Start endpoint: " << address.c_str() << std::endl;
+    spdlog::info("Start endpoint: {}", address.c_str());
 
     http_listener listener(address);
 
@@ -42,14 +43,14 @@ void HttpTestServer::run()
         listener
             .open()
             .then([&listener]() {
-                std::cout << "starting to listen" << std::endl;
+                spdlog::info("starting to listen");
             })
             .wait();
         while (!finished_) {
             std::this_thread::sleep_for(std::chrono::seconds(3));
         };
     } catch (std::exception const & e) {
-        std::cout << e.what() << std::endl;
+        spdlog::info("Exception: {}", e.what());
     }
 }
 
