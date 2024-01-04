@@ -8,6 +8,8 @@ add_library(geolocation_search_client
     geolocation_search.cpp
     geolocation_client.cpp
     postgresql_client.cpp
+    geolocation_search_factory.cpp
+    geolocation_configuration.cpp
     include/geolocation.hpp
     include/geolocation_client_interface.hpp
     include/geolocation_client.hpp
@@ -15,8 +17,8 @@ add_library(geolocation_search_client
     include/databse_client_interface.hpp
     include/postgresql_client.hpp
     include/geolocation_search_factory.hpp
-    geolocation_search_factory.cpp
-    include/null_databse.hpp)
+    include/null_databse.hpp
+    include/geolocation_configuration.hpp)
 
 target_include_directories(geolocation_search_client
     PUBLIC

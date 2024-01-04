@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include <geolocation_search.hpp>
+#include <geolocation_configuration.hpp>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -19,7 +20,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    bool init();
+    bool init(const GeoLocationConfiguration& configuration);
 
 private slots:
     void handleGetLocationButton();

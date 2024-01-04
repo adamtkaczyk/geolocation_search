@@ -13,9 +13,10 @@ MainWindow::MainWindow(QWidget *parent)
 
 }
 
-bool MainWindow::init()
+bool MainWindow::init(const GeoLocationConfiguration& configuration)
 {
     //TODO: chage to read from config file or input paramiter
+/*
     GeoLocationConfiguration config;
     config.database_type = GeoLocationConfiguration::DatabaseType::POSTGRESQL;
     config.db_name = "geolocations";
@@ -23,11 +24,12 @@ bool MainWindow::init()
     config.db_password = "testpassword123";
     config.db_hostname = "127.0.0.1";
     config.db_port = 5432;
-    config.geolocation_client_type = GeoLocationConfiguration::GeoLocationClientType::IPSTACK;
-    config.geolocation_client_url = "http://api.ipstack.com";
-    config.api_key = "2361f872909e692d1a67ae3e538f4582";
+    configuration.geolocation_client_type = GeoLocationConfiguration::GeoLocationClientType::IPSTACK;
+    configuration.geolocation_client_url = "http://api.ipstack.com";
+    configuration.api_key = "2361f872909e692d1a67ae3e538f4582";
+*/
 
-    geolocation_serach_ = GeoLocationFactory::create(config);
+    geolocation_serach_ = GeoLocationFactory::create(configuration);
 
     connect(ui->get_location_button, &QPushButton::released, this, &MainWindow::handleGetLocationButton);
     connect(ui->delete_location_button, &QPushButton::released, this, &MainWindow::handleDeleteLocationButton);
